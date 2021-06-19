@@ -25,7 +25,7 @@ class AlienInvasion:
 		while True:
 			self._check_events()
 			self.ship.update()
-			self.update_screen()
+			self._update_screen()
 	 
 	def _check_events(self):
 		"""Respond to keypresses and mouse events."""
@@ -45,13 +45,14 @@ class AlienInvasion:
 				if event.key == pygame.K_LEFT:
 					self.ship.moving_left = False
 
-			# Make the most recently drawn screen visible.
-			pygame.display.flip()
-
-	def update_screen(self):
+			
+	def _update_screen(self):
 		"""Update images on screen to the new screen."""
 		self.screen.fill(self.settings.bg_color)
 		self.ship.blitme()
+	
+	# Make the most recently drawn screen visible.
+		pygame.display.flip()
 
 if __name__ == '__main__':
 	# Make a game instance, and run the game.
