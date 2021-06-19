@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from spiderman import Spiderman
 
 class AlienInvasion:
 	"""Overall class to manage game assets and behaviors."""
@@ -18,20 +19,39 @@ class AlienInvasion:
 
 		self.ship = Ship(self)
 
+
 	def run_game(self):
 		"""Start the main loop for the game."""
 		while True:
-			# Watch for the keyboard and mouse events
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					sys.exit()
-
-			# Redraw the screen during each pass through the loop
-			self.screen.fill(self.settings.bg_color)
-			self.ship.blitme()
+			self._check_events()
+			self.ship.update()
+			self.update_screen()
+	 
+	def _check_events(self):
+		"""Respond to keypresses and mouse events."""
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RIGHT:
+					# Move the ship to the right
+					self.ship.moving_right = True
+				if event.key == pygame.K_LEFT:
+					self.ship.moving_left = True
+					
+			elif event.type == pygame.KEYUP:
+				if event.key == pygame.K_RIGHT:
+					self.ship.moving_right = False
+				if event.key == pygame.K_LEFT:
+					self.ship.moving_left = False
 
 			# Make the most recently drawn screen visible.
 			pygame.display.flip()
+
+	def update_screen(self):
+		"""Update images on screen to the new screen."""
+		self.screen.fill(self.settings.bg_color)
+		self.ship.blitme()
 
 if __name__ == '__main__':
 	# Make a game instance, and run the game.
